@@ -28,6 +28,14 @@ export default class ColorConverterPlugin extends Plugin {
   }
 
   performColorConversion(color: string, format: 'rgb' | 'hex' | 'hsl'): string {
+    // Remove escape character if present
+    color = color.replace(/^\\/, '');
+    
+    // Expand shorthand hex if necessary
+    if (/^(#|&num;)?[0-9A-F]{3,4}$/i.test(color)) {
+      color = this.expandShorthandHex(color);
+    }
+
     switch (format) {
       case 'rgb':
         return this.convertToRGBA(color);
@@ -54,20 +62,30 @@ export default class ColorConverterPlugin extends Plugin {
   }
 
   convertToHEX(color: string): string {
+    let result: string;
     if (/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)$/i.test(color)) {
       const [r, g, b, a = "1"] = color.match(/[\d.]+/g) as string[];
-      return this.rgbaToHex(parseInt(r), parseInt(g), parseInt(b), parseFloat(a));
+      result = this.rgbaToHex(parseInt(r), parseInt(g), parseInt(b), parseFloat(a));
     } else if (/^hsla?\((\d+),\s*([\d.]+)%,\s*([\d.]+)%(?:,\s*([\d.]+))?\)$/i.test(color)) {
       const [h, s, l, a = "1"] = color.match(/[\d.]+/g) as string[];
       const rgba = this.hslaToRgba(parseInt(h), parseInt(s), parseInt(l), parseFloat(a));
       const [r, g, b, alpha] = rgba.match(/[\d.]+/g) as string[];
-      return this.rgbaToHex(parseInt(r), parseInt(g), parseInt(b), parseFloat(alpha));
+      result = this.rgbaToHex(parseInt(r), parseInt(g), parseInt(b), parseFloat(alpha));
     } else if (/^(#|&num;)?[0-9A-F]{6}([0-9A-F]{2})?$/i.test(color)) {
       const hex = color.replace(/(#|&num;)/g, "");
-      return "#" + hex.padEnd(8, 'F').toUpperCase();
+      result = "#" + hex.padEnd(8, 'F').toUpperCase();
     } else {
       return "Invalid color format";
     }
+    return '\\' + result;  // Add escape character
+  }
+
+  expandShorthandHex(hex: string): string {
+    hex = hex.replace(/(#|&num;)/g, '');
+    if (hex.length === 3 || hex.length === 4) {
+      return '#' + hex.split('').map(char => char + char).join('');
+    }
+    return '#' + hex;
   }
 
   convertToHSLA(color: string): string {
@@ -87,7 +105,7 @@ export default class ColorConverterPlugin extends Plugin {
 
   // Helper functions
   hexToRgba(hex: string): string {
-    hex = hex.replace(/(#|&num;)/g, '');
+    hex = hex.replace(/^(\\#|#|&num;)/g, '');
     const r = parseInt(hex.substring(0, 2), 16);
     const g = parseInt(hex.substring(2, 4), 16);
     const b = parseInt(hex.substring(4, 6), 16);
