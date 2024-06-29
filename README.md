@@ -1,0 +1,1 @@
+Color Converter is a plugin for Obsidian.md which allows you to convert highlighted color codes between various formats, including HEX, RGB/RGBA, and HSL/HSLA.
