@@ -3,7 +3,7 @@
     "name": "Color Converter",
     "version": "0.1.0",
     "minAppVersion": "0.15.0",
-    "description": "Convert between RGB, HEX, and HSL color formats.",
+    "description": "Convert between HEX, RGB/RGBA, and HSL/HSLA color formats.",
     "author": "Heather Piper",
     "authorUrl": "https://www.github.com/heatherpiper",
     "isDesktopOnly": false
