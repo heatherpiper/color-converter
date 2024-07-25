@@ -7,7 +7,7 @@ Color Converter is a plugin for Obsidian.md which allows you to convert highligh
 
 ![Color Converter demonstration](color-converter-demo.gif)
 
-To convert a color to a new format, first highlight your selected color, then open the control panel by entering `Ctrl` + `p`, search for **Color Converter**, and select your desired output format. Or, you may assign a hotkey to each conversion type by going to **Settings** → **Community plugins** → **Color Converter** and selecting the plus symbol to open the hotkey options.
+To convert a color to a new format, highlight your selected color, open the command palette (`Ctrl` + `p`), search for **Color Converter**, and select your desired output format. Alternatively, you may assign a hotkey to each conversion type. To access the hotkey options, go to **Settings** → **Community plugins** → **Color Converter** and select the plus symbol.
 
 > [!TIP]
 > This demonstration gif uses [Color Highlighter](https://www.github.com/heatherpiper/color-highlighter), an Obsidian plugin for highlighting colors in notes.
